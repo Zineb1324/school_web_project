@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exams Portal — Grading & Analytics</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <meta name="description" content="Exams Portal — Grading & Analytics Module with auto-calculated averages">
+</head>
+<body>
+
+    <!-- ========== LOGIN SCREEN ========== -->
+    <div id="loginScreen" class="screen active">
+        <div class="bg-shapes">
+            <div class="bg-shape s1"></div>
+            <div class="bg-shape s2"></div>
+            <div class="bg-shape s3"></div>
+        </div>
+        <div class="login-wrapper">
+            <div class="login-brand">
+                <div class="brand-logo"><ion-icon name="school"></ion-icon></div>
+                <h1>Exams Portal</h1>
+                <p>Grading & Analytics</p>
+            </div>
+            <div class="login-cards">
+                <!-- Student Login -->
+                <div class="login-card">
+                    <div class="lc-icon lc-icon-student"><ion-icon name="person-outline"></ion-icon></div>
+                    <h2>Student Portal</h2>
+                    <p>View your grades & averages</p>
+                    <div class="lc-field">
+                        <label for="studentLoginSelect">Your Name</label>
+                        <select id="studentLoginSelect">
+                            <option value="" disabled selected>Choose your name…</option>
+                        </select>
+                    </div>
+                    <button id="studentLoginBtn" class="btn-login btn-blue" disabled>
+                        <ion-icon name="arrow-forward-outline"></ion-icon> View My Grades
+                    </button>
+                </div>
+                <!-- Teacher Login -->
+                <div class="login-card">
+                    <div class="lc-icon lc-icon-teacher"><ion-icon name="school-outline"></ion-icon></div>
+                    <h2>Teacher Portal</h2>
+                    <p>Add & manage student grades</p>
+                    <div class="lc-field">
+                        <label for="teacherLoginSelect">Your Name</label>
+                        <select id="teacherLoginSelect">
+                            <option value="" disabled selected>Choose your name…</option>
+                        </select>
+                    </div>
+                    <button id="teacherLoginBtn" class="btn-login btn-purple" disabled>
+                        <ion-icon name="arrow-forward-outline"></ion-icon> Manage Grades
+                    </button>
+                </div>
+            </div>
+            <p class="login-footer">Module 3 — Grading & Analytics</p>
+        </div>
+    </div>
+
+    <!-- ========== STUDENT DASHBOARD ========== -->
+    <div id="studentScreen" class="screen">
+        <nav class="navbar">
+            <div class="nav-brand"><ion-icon name="school"></ion-icon><span>Exams Portal</span></div>
+            <div class="nav-right">
+                <span class="nav-user" id="navStudentName"></span>
+                <button class="btn-logout" id="studentLogoutBtn"><ion-icon name="log-out-outline"></ion-icon></button>
+            </div>
+        </nav>
+        <main class="dash-content">
+            <div class="page-head">
+                <h1 id="welcomeStudent">Welcome</h1>
+                <div class="tags">
+                    <span class="tag tag-blue" id="tagStudentClass">Grade 1A</span>
+                    <span class="tag tag-dim">Student</span>
+                </div>
+            </div>
+            <div class="stats-row" id="studentStats">
+                <div class="scard sc-avg">
+                    <ion-icon name="calculator-outline"></ion-icon>
+                    <span class="sc-val" id="sAvg">—</span>
+                    <span class="sc-lbl">Average / 100</span>
+                </div>
+                <div class="scard sc-exams">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                    <span class="sc-val" id="sExams">—</span>
+                    <span class="sc-lbl">Exams Taken</span>
+                </div>
+                <div class="scard sc-class">
+                    <ion-icon name="ribbon-outline"></ion-icon>
+                    <span class="sc-val" id="sClass">—</span>
+                    <span class="sc-lbl">Classification</span>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-head"><h2><ion-icon name="list-outline"></ion-icon> My Grades</h2></div>
+                <div class="tbl-wrap">
+                    <table class="tbl">
+                        <thead><tr><th>Subject</th><th>Exam</th><th>Score</th><th>Date</th></tr></thead>
+                        <tbody id="studentGradesBody"></tbody>
+                    </table>
+                </div>
+                <div id="noGradesMsg" class="empty-msg hidden">
+                    <ion-icon name="document-outline"></ion-icon>
+                    <p>No grades recorded yet.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ========== TEACHER DASHBOARD ========== -->
+    <div id="teacherScreen" class="screen">
+        <nav class="navbar">
+            <div class="nav-brand"><ion-icon name="school"></ion-icon><span>Smart School</span></div>
+            <div class="nav-right">
+                <span class="nav-user" id="navTeacherName"></span>
+                <button class="btn-logout" id="teacherLogoutBtn"><ion-icon name="log-out-outline"></ion-icon></button>
+            </div>
+        </nav>
+        <main class="dash-content">
+            <div class="page-head">
+                <h1 id="welcomeTeacher">Welcome</h1>
+                <div class="tags">
+                    <span class="tag tag-purple" id="tagTeacherSubject">Mathematics</span>
+                    <span class="tag tag-dim">Teacher</span>
+                </div>
+            </div>
+            <!-- Add Grade Form -->
+            <div class="panel panel-form">
+                <div class="panel-head">
+                    <h2><ion-icon name="create-outline"></ion-icon> Add Grade</h2>
+                    <span class="trigger-badge">⚡ Trigger auto-calculates average</span>
+                </div>
+                <form id="gradeForm" class="gform">
+                    <div class="gform-row">
+                        <div class="gform-group">
+                            <label for="fStudent">Student</label>
+                            <select id="fStudent" required><option value="" disabled selected>Select student…</option></select>
+                        </div>
+                        <div class="gform-group">
+                            <label for="fExam">Exam</label>
+                            <select id="fExam" required><option value="" disabled selected>Select exam…</option></select>
+                        </div>
+                        <div class="gform-group">
+                            <label for="fScore">Score / 100</label>
+                            <input type="number" id="fScore" min="0" max="100" step="0.5" placeholder="e.g. 75" required>
+                        </div>
+                        <div class="gform-group gform-btn">
+                            <button type="submit" class="btn-save"><ion-icon name="save-outline"></ion-icon> Save</button>
+                        </div>
+                    </div>
+                </form>
+                <div id="alertMsg" class="alert hidden"></div>
+                <div id="triggerMsg" class="trigger-notif hidden"></div>
+            </div>
+            <!-- Grades Table -->
+            <div class="panel">
+                <div class="panel-head"><h2><ion-icon name="list-outline"></ion-icon> Grades — My Subject</h2></div>
+                <div class="tbl-wrap">
+                    <table class="tbl">
+                        <thead><tr><th>Student</th><th>Exam</th><th>Score</th><th>Average</th><th>Classification</th><th>Action</th></tr></thead>
+                        <tbody id="teacherGradesBody"></tbody>
+                    </table>
+                </div>
+                <div id="noTeacherGrades" class="empty-msg hidden">
+                    <ion-icon name="document-outline"></ion-icon>
+                    <p>No grades in your subject yet.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
